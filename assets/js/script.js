@@ -12,9 +12,8 @@ function writePassword() {
 
 var passwordInfo = {
   length: 8,
-  characters: [""],
+  characters: [],
   currentComplexity: 0,
-  complexity: 0,
   password: ""
 }
 
@@ -38,45 +37,31 @@ var symbols = {
 */
 
 function generatePassword() {
-  // passwordInfo.length = definePasswordLength();
-  // passwordInfo.characters[0] = useInPassword("lower case letters");
-  // passwordInfo.characters[1] = useInPassword("upper case letters");
-  // passwordInfo.characters[2] = useInPassword("numbers");
-  // passwordInfo.characters[3] = useInPassword("special characters");
+  passwordInfo.length = definePasswordLength();
+  //generate arrays for symbols
   symbols.lower = symbols.letters.split("");
   symbols.upper = symbols.letters.toUpperCase();
   symbols.upper = symbols.upper.split("");
   symbols.numbers = symbols.numbers.split("");
-
-  for (i = 0; i < symbols.lower.length; i++) {
-    console.log(symbols.lower[i]);
+  // push desired character types to playerInfo.characters array
+  if (useInPassword("lower case letters")) {
+    passwordInfo.characters.push(symbols.lower);
   }
 
-  for (i = 0; i < symbols.upper.length; i++) {
-    console.log(symbols.upper[i]);
+  if (useInPassword("upper case letters")) {
+    passwordInfo.characters.push(symbols.upper);
   }
 
-  for (i = 0; i < symbols.numbers.length; i++) {
-    console.log(symbols.numbers[i]);
+  if (useInPassword("numbers")) {
+    passwordInfo.characters.push(symbols.numbers);
   }
-//   for (i = 0; i < passwordInfo.characters.length; i++) {
-//     if (passwordInfo.characters[i]) {
-//       passwordInfo.complexity++;
-//     }
-//   }  
 
-//   for (c = 0; c < complexity; c++) {
-//     if (c = complexity - 1) {
-//       while (passwordInfo.password < passwordInfo.length) {
-        
-//       }
-//     }
-//   }
-//   for (i = 0; i < passwordInfo.length; i++) {
-//     passwordInfo.password += lowerCase[randomNumber(0, lowerCase.length - 1)];
-//   }
-  
-//   return passwordInfo.password;
+  // create password
+  for (i = 0; i < passwordInfo.length; i++) {
+    passwordInfo.password += getCharacter();
+  }
+
+  return passwordInfo.password;
 }
 
 // Random number generator
@@ -84,6 +69,13 @@ function randomNumber(min, max) {
   var value = Math.floor(Math.random() * (max - min + 1) + min);
   return value;
 };
+
+// Pulls random character from random type of available characters and types
+function getCharacter () {
+  var characterType = passwordInfo.characters[randomNumber(0,passwordInfo.characters.length - 1)];
+  var character = characterType[randomNumber(0,characterType.length - 1)];
+  return character;
+}
 
 // Array to define length of password
 function definePasswordLength() {
