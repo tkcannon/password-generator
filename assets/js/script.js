@@ -10,6 +10,12 @@ function writePassword() {
 
 }
 
+var passwordInfo = {
+  length: 8,
+  characters: ["","","",""],
+  password: ""
+}
+
 /*Create generatePassword function
 *
 * if statements to handle password complexity
@@ -25,8 +31,16 @@ function writePassword() {
 */
 
 function generatePassword() {
-  var passwordLength = definePasswordLength();
-  console.log(passwordLength);
+  passwordInfo.length = definePasswordLength();
+  passwordInfo.characters[0] = useInPassword("lower case letters");
+  passwordInfo.characters[1] = useInPassword("upper case letters");
+  passwordInfo.characters[2] = useInPassword("numbers");
+  passwordInfo.characters[3] = useInPassword("special characters");
+ 
+
+
+
+  return passwordInfo.password;
 }
 
 /*  ??? Randomize function to rearrange lettering order
@@ -51,6 +65,25 @@ function definePasswordLength() {
       }
     }
   }
+}
+
+// Ask user what symbols they would like to use
+function useInPassword(query) {
+  var bool = window.prompt("Would you like to use " + query + " in your password? y/n");
+  switch (bool) {
+    case "y":
+      bool = true;
+
+      break;
+    case "n":
+      bool = false;
+      break;
+    default:
+      window.alert("Please enter y or n when making you selection");
+      bool = useInPassword(query);
+      break;
+  }
+  return bool;
 }
 
 // Add event listener to generate button
