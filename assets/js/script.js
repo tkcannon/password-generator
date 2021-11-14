@@ -19,13 +19,13 @@ var passwordInfo = {
 var symbols = {
   lower: "abcdefghijklmnopqrstuvwxyz",
   numbers: "0123456789",
-  special: " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+  special: "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 }
 
 // Generate password
 function generatePassword() {
   var password = ""; //clears any existing password
-  passwordInfo.characters.length = 0; //clears any previously selected charactertypes
+  passwordInfo.characters.length = 0; //clears any previously selected character types
 
   getUserInput();
 
@@ -34,7 +34,7 @@ function generatePassword() {
     password += getCharacter();
   }
 
-  // ensures that password has at least one character of each selected type
+  // Ensures that password has at least one character of each selected type
   for (i = 0; i < passwordInfo.characters.length; i++) {
     characterType = passwordInfo.characters[i];
     password += characterType[randomNumber(0, passwordInfo.characters.length)];
@@ -43,7 +43,7 @@ function generatePassword() {
   return password;
 }
 
-// push desired character types to playerInfo.characters array
+// Asks user how long of a password they want, then calls function to get character types
 function getUserInput() {
   var length = parseInt(window.prompt("How long would you like your new password to be? (Must be between 8 and 128 characters)"));
 
@@ -62,22 +62,33 @@ function getUserInput() {
   useCharacterTypes();
 }
 
+// Asks user what character types they would like to use then pushes those types to playerInfo.characters array
 function useCharacterTypes() {
-  if (useInPassword("lower case letters")) {
-    passwordInfo.characters.push(symbols.lower);
-  }
+  while (passwordInfo.characters.length === 0) {
+    if (useInPassword("lower case letters")) {
+      passwordInfo.characters.push(symbols.lower);
+      window.alert("Your password will include lower case letters");
+    }
 
-  if (useInPassword("upper case letters")) {
-    symbols.upper = symbols.lower.toUpperCase();
-    passwordInfo.characters.push(symbols.upper);
-  }
+    if (useInPassword("upper case letters")) {
+      symbols.upper = symbols.lower.toUpperCase();
+      passwordInfo.characters.push(symbols.upper);
+      window.alert("Your password will include upper case letters");
+    }
 
-  if (useInPassword("numbers")) {
-    passwordInfo.characters.push(symbols.numbers);
-  }
+    if (useInPassword("numbers")) {
+      passwordInfo.characters.push(symbols.numbers);
+      window.alert("Your password will include numbers");
+    }
 
-  if (useInPassword("special symbols")) {
-    passwordInfo.characters.push(symbols.special);
+    if (useInPassword("special symbols")) {
+      passwordInfo.characters.push(symbols.special);
+      window.alert("Your password will include special characters");
+    }
+
+    if (passwordInfo.characters.length === 0) {
+      window.alert("Please select at least one character type to use in your password");
+    }
   }
 }
 
