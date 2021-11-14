@@ -9,42 +9,66 @@ function writePassword() {
   passwordText.value = password;
 }
 
-// class for password vars
+// Class for password vars
 var passwordInfo = {
   length: 8,
   characters: [],
-  currentComplexity: 0,
-  password: ""
 }
 
-//class for symbol arrays
+// Class for symbol arrays
 var symbols = {
-  letters: "abcdefghijklmnopqrstuvwxyz",
+  lower: "abcdefghijklmnopqrstuvwxyz",
   numbers: "0123456789",
+  special: " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 }
 
-//generate arrays for symbols
-function createCharacterArrays() {
-  symbols.lower = symbols.letters.split("");
-  symbols.upper = symbols.letters.toUpperCase();
-  symbols.upper = symbols.upper.split("");
-  symbols.numbers = symbols.numbers.split("");
-}
-
-/*
-* if no on all alert that nothing was selected and return to beginning
-*/
-
-//Generate password
+// Generate password
 function generatePassword() {
-  passwordInfo.length = definePasswordLength();
+  var password = ""; //clears any existing password
+  passwordInfo.characters.length = 0; //clears any previously selected charactertypes
 
-  // push desired character types to playerInfo.characters array
+  getUserInput();
+
+  // Create password
+  for (i = 0; i < passwordInfo.length - passwordInfo.characters.length; i++) {
+    password += getCharacter();
+  }
+
+  // ensures that password has at least one character of each selected type
+  for (i = 0; i < passwordInfo.characters.length; i++) {
+    characterType = passwordInfo.characters[i];
+    password += characterType[randomNumber(0, passwordInfo.characters.length)];
+  }
+
+  return password;
+}
+
+// push desired character types to playerInfo.characters array
+function getUserInput() {
+  var length = parseInt(window.prompt("How long would you like your new password to be? (Must be between 8 and 128 characters)"));
+
+  if (8 <= length && length <= 128) {
+    passwordInfo.length = length;
+  }
+
+  else {
+    while (!(8 <= length && length >= 128)) {
+      length = parseInt(window.prompt("Please enter a number between 8 and 128"));
+      if (8 <= length && length <= 128) {
+        passwordInfo.length = length;
+      }
+    }
+  }
+  useCharacterTypes();
+}
+
+function useCharacterTypes() {
   if (useInPassword("lower case letters")) {
     passwordInfo.characters.push(symbols.lower);
   }
 
   if (useInPassword("upper case letters")) {
+    symbols.upper = symbols.lower.toUpperCase();
     passwordInfo.characters.push(symbols.upper);
   }
 
@@ -52,46 +76,8 @@ function generatePassword() {
     passwordInfo.characters.push(symbols.numbers);
   }
 
-  /*
-  * add special symbols
-  * create rule for empty characters array
-  */
-
-  // create password
-  var temp = passwordInfo.characters.length;
-  var index = [];
-  for (i = 0; i < passwordInfo.characters.length; i++) {
-    index.push[i] = i;
-  }
-
-
-  for (i = 0; i < passwordInfo.characters.length; i++) {
-    charType = passwordInfo.characters[i];
-    passwordInfo.password += charType[randomNumber(0, charType.length - 1)];
-  }
-
-  for (i = 0; i < passwordInfo.length - passwordInfo.characters.length; i++) {
-    passwordInfo.password += getCharacter();
-  }
-
-  return passwordInfo.password;
-}
-
-// Define length of password
-function definePasswordLength() {
-  var length = parseInt(window.prompt("How long would you like your new password to be? (Must be between 8 and 128 characters)"));
-
-  if (8 <= length && length <= 128) {
-    return length;
-  }
-
-  else {
-    while (!(8 <= length && length >= 128)) {
-      length = parseInt(window.prompt("Please enter a number between 8 and 128"));
-      if (8 <= length && length <= 128) {
-        return length;
-      }
-    }
+  if (useInPassword("special symbols")) {
+    passwordInfo.characters.push(symbols.special);
   }
 }
 
@@ -109,26 +95,22 @@ function useInPassword(query) {
     default:
       window.alert("Please enter y or n when making you selection");
       bool = useInPassword(query);
-      break;
   }
   return bool;
 }
 
 // Random number generator
 function randomNumber(min, max) {
-  var value = Math.floor(Math.random() * (max - min + 1) + min);
+  var value = Math.floor(Math.random() * (max - min) + min);
   return value;
 };
 
 // Pulls random character from random type of available characters and types
 function getCharacter() {
-  var characterType = passwordInfo.characters[randomNumber(0, passwordInfo.characters.length - 1)];
-  var character = characterType[randomNumber(0, characterType.length - 1)];
+  var characterType = passwordInfo.characters[randomNumber(0, passwordInfo.characters.length)];
+  var character = characterType[randomNumber(0, characterType.length)];
   return character;
 }
-
-// Called on page load to prevent spliting already split arrays on new password generation
-createCharacterArrays();
 
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
