@@ -12,8 +12,15 @@ function writePassword() {
 
 var passwordInfo = {
   length: 8,
-  characters: ["","","",""],
+  characters: [""],
+  currentComplexity: 0,
+  complexity: 0,
   password: ""
+}
+
+var symbols = {
+  letters: "abcdefghijklmnopqrstuvwxyz",
+  numbers: "0123456789",
 }
 
 /*Create generatePassword function
@@ -31,23 +38,52 @@ var passwordInfo = {
 */
 
 function generatePassword() {
-  passwordInfo.length = definePasswordLength();
-  passwordInfo.characters[0] = useInPassword("lower case letters");
-  passwordInfo.characters[1] = useInPassword("upper case letters");
-  passwordInfo.characters[2] = useInPassword("numbers");
-  passwordInfo.characters[3] = useInPassword("special characters");
- 
+  // passwordInfo.length = definePasswordLength();
+  // passwordInfo.characters[0] = useInPassword("lower case letters");
+  // passwordInfo.characters[1] = useInPassword("upper case letters");
+  // passwordInfo.characters[2] = useInPassword("numbers");
+  // passwordInfo.characters[3] = useInPassword("special characters");
+  symbols.lower = symbols.letters.split("");
+  symbols.upper = symbols.letters.toUpperCase();
+  symbols.upper = symbols.upper.split("");
+  symbols.numbers = symbols.numbers.split("");
 
+  for (i = 0; i < symbols.lower.length; i++) {
+    console.log(symbols.lower[i]);
+  }
 
+  for (i = 0; i < symbols.upper.length; i++) {
+    console.log(symbols.upper[i]);
+  }
 
-  return passwordInfo.password;
+  for (i = 0; i < symbols.numbers.length; i++) {
+    console.log(symbols.numbers[i]);
+  }
+//   for (i = 0; i < passwordInfo.characters.length; i++) {
+//     if (passwordInfo.characters[i]) {
+//       passwordInfo.complexity++;
+//     }
+//   }  
+
+//   for (c = 0; c < complexity; c++) {
+//     if (c = complexity - 1) {
+//       while (passwordInfo.password < passwordInfo.length) {
+        
+//       }
+//     }
+//   }
+//   for (i = 0; i < passwordInfo.length; i++) {
+//     passwordInfo.password += lowerCase[randomNumber(0, lowerCase.length - 1)];
+//   }
+  
+//   return passwordInfo.password;
 }
 
-/*  ??? Randomize function to rearrange lettering order
-*   if I go this route generate password will call this function
-*   this function will then return a string to generatePassword that will then return to writePassword
-*/
-
+// Random number generator
+function randomNumber(min, max) {
+  var value = Math.floor(Math.random() * (max - min + 1) + min);
+  return value;
+};
 
 // Array to define length of password
 function definePasswordLength() {
