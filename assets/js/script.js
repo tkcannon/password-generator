@@ -43,26 +43,24 @@ function generatePassword() {
   return password;
 }
 
-// Asks user how long of a password they want, then calls function to get character types
+// Asks user for length of password.
 function getUserInput() {
   var length = parseInt(window.prompt("How long would you like your new password to be? (Must be between 8 and 128 characters)"));
 
-  if (8 <= length && length <= 128) {
+  //if input is valid, sets length of password and moves on to character type selection
+  if(length >= 8 && length <= 128) {
     passwordInfo.length = length;
+    useCharacterTypes();
   }
 
+  //if input is invalid, notifies user of invalid input and calls this function again
   else {
-    while (!(8 <= length && length >= 128)) {
-      length = parseInt(window.prompt("Please enter a number between 8 and 128"));
-      if (8 <= length && length <= 128) {
-        passwordInfo.length = length;
-      }
-    }
+    window.alert("Invalid input, please input a number between 8 and 128");
+    getUserInput();
   }
-  useCharacterTypes();
 }
 
-// Asks user what character types they would like to use then pushes those types to playerInfo.characters array
+// Asks user what character types they would like to use then pushes chosen types to playerInfo.characters array
 function useCharacterTypes() {
   while (passwordInfo.characters.length === 0) {
     if (useInPassword("lower case letters")) {
